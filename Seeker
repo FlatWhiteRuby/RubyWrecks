@@ -2,29 +2,42 @@
 
 import os
 
-
 # shellcheck disable=SC1036
 # shellcheck disable=SC1088
-def main():
-    for root, dirs, files in os.walk("/home", topdown=False, onerror=None, followlinks=True):
-        for name in files:
-            if name.endswith(".txt"):
-                print(os.path.join(root, name))
-        for name in dirs:
-            if name.endswith(".txt"):
-                print(os.path.join(root, name))
+document_extensions = [".doc", ".docx", ".odt", ".pdf", ".xls", ".xlsx", ".ppt", ".pptx", ".txt"]
+
+try:
+    def main():
+        while True:
+            i = input("Enter an Extension:")
+            if i not in document_extensions:
+                print(".doc", ".docx", ".odt", ".pdf", ".xls", ".xlsx", ".ppt", ".pptx", ".txt")
+                continue
+            else:
+                if i in document_extensions:
+                    break
+
+        for root, dirs, files in os.walk(input("Enter a Directory:"), topdown=True, onerror=None, followlinks=True):
+            for name in files:
+                if name.endswith(i):
+                    print(os.path.join(root, name))
+            for name in dirs:
+                if name.endswith(i):
+                    print(os.path.join(root, name))
 
 
-if __name__ == "__main__":
-    main()
+    if __name__ == "__main__":
+        main()
 
-while True:
-    try:
-        x = open(input("Enter Path:"), "r", encoding="utf-8")
-        y = x.read()
-        print(y)
-        x.close()
-    except FileNotFoundError:
-        print("Enter a valid path!")
-    else:
-        break
+    while True:
+        try:
+            x = open(input("Enter Path To File You Wish To View:"), "r", encoding="utf-8")
+            y = x.read()
+            print(y)
+            x.close()
+        except FileNotFoundError:
+            print("Enter a Valid Path!")
+        else:
+            break
+except KeyboardInterrupt:
+    print("Seeker Terminated!")
